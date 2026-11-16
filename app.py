@@ -168,8 +168,27 @@ with tab1:
                     st.write(respuesta.text)
                 else:
                     st.warning("Gemini no entregó una recomendación.")
-            except Exception:
-                st.error("No fue posible consultar Gemini. Revisa el secreto, la cuota y el nombre del modelo.")
+            except Exception as exc:
+                # Diagnóstico seguro: no mostrar la clave ni datos sensibles de la solicitud.
+                import re
+                detalle = str(exc).replace(str(api_key), "[CLAVE OCULTA]")
+                detalle = re.sub(r"AIza[0-9A-Za-z_-]{16,}", "[CLAVE OCULTA]", detalle)
+                detalle = re.sub(r"(?i)(api[_ -]?key[=: ]+)[^,\s}]+", r"\1[OCULTO]", detalle)
+                codigo = getattr(exc, "code", None)
+                if codigo is None:
+                    match = re.search(r"\b(400|401|403|404|429|500|503)\b", detalle)
+                    codigo = match.group(1) if match else None
+                st.error("No se pudo completar la consulta a Gemini.")
+                if str(codigo) in ("401", "403"):
+                    st.info("Error de autorización. Comprueba que la clave corresponde a la API de Gemini y está habilitada para este proyecto.")
+                elif str(codigo) == "404":
+                    st.info("El modelo configurado no se encontró o no está disponible para esta clave. Revisa GEMINI_MODEL.")
+                elif str(codigo) == "429":
+                    st.info("Se alcanzó el límite de solicitudes o de cuota del proyecto de Gemini.")
+                elif isinstance(exc, (ImportError, ModuleNotFoundError)):
+                    st.info("Falta instalar google-genai en las dependencias de Streamlit Cloud (requirements.txt).")
+                with st.expander("Detalle técnico del error (sin credenciales)"):
+                    st.code(f"{type(exc).__name__} (código {codigo or 'no identificado'}): {detalle[:1100]}", language="text")
 # Cargar los resultados reales generados por el notebook de comparación
 @st.cache_data
 def leer_resultados():
@@ -239,11 +258,13 @@ with tab2:
                    "accuracy": "Accuracy", "f1_defectuosa": "F1 defectuosas",
                    "recall_defectuosa": "Recall defectuosas", "fp": "FP", "fn": "FN"}
         vista = vista.rename(columns=nombres)
-        # Presentar porcentajes legibles sin modificar las métricas originales
-        for columna in ["Accuracy balanceada", "Accuracy", "F1 defectuosas", "Recall defectuosas"]:
-            if columna in vista.columns:
-                vista[columna] = vista[columna].map(lambda valor: f"{valor:.2%}")
-        st.dataframe(vista, hide_index=True, use_container_width=True)
+        st.dataframe(vista, hide_index=True, use_container_width=True,
+                     column_config={
+                         "Accuracy balanceada": st.column_config.NumberColumn(format="%.2f"),
+                         "Accuracy": st.column_config.NumberColumn(format="%.2f"),
+                         "F1 defectuosas": st.column_config.NumberColumn(format="%.2f"),
+                         "Recall defectuosas": st.column_config.NumberColumn(format="%.2f"),
+                     })
         if "accuracy_balanceada" in metricas.columns:
             st.bar_chart(metricas, x="modelo", y="accuracy_balanceada", color=AZUL,
                          horizontal=True, height=220, sort=False)
