@@ -22,17 +22,6 @@ Aplicación: https://control-calidad-hito-2.streamlit.app/
 
 En las 186 imágenes de prueba, EfficientNet-B0 obtuvo una exactitud balanceada de 96,43%, frente al 91,70% de YOLO26n-cls.
 
-## Cómo ejecutar Streamlit
-
-Con Python instalado, desde la carpeta del proyecto:
-
-```bash
-pip install -r requirements.txt
-streamlit run app.py
-```
-
-La clasificación funciona con el modelo incluido en `modelos/`. Para utilizar las recomendaciones de Gemini, hay que configurar `GEMINI_API_KEY` en los secretos de Streamlit y, si corresponde, `GEMINI_MODEL`. No se deben subir claves al repositorio.
-
 ## Alcance del proyecto
 
 Los registros de producción son datos históricos de referencia y las fotografías provienen de un dataset público de Kaggle. La relación entre las fotos y las líneas de producción es simulada, por lo que las clasificaciones no comprueban defectos reales en una planta. Las recomendaciones son un apoyo para la inspección y requieren revisión humana.
