@@ -12,15 +12,18 @@ Aplicación: https://control-calidad-hito-2.streamlit.app/
 
 ## Archivos del repositorio
 
-- `app.py`: aplicación interactiva en Streamlit.
+- `app.py`: aplicación interactiva desarrollada en Streamlit.
 - `Comparacion_Modelos_Imagenes_Hito2.ipynb`: entrenamiento y comparación de EfficientNet-B0 y YOLO26n-cls.
 - `Aplicacion_Control_Calidad_Hito2.ipynb`: desarrollo y pruebas de la aplicación.
-- `api/` y `Dockerfile`: servicio de clasificación utilizado desde n8n.
+- `Hito2_Modelos_Pronostico.ipynb`: implementación y comparación de los tres modelos de pronóstico de defectos.
+- `api/` y `Dockerfile`: servicio de clasificación de imágenes utilizado desde n8n.
 - `modelos/`: modelo EfficientNet-B0 entrenado.
-- `resultados/`: métricas de prueba y selección del modelo.
-- `ejemplos/`: fotografías para probar la aplicación.
+- `resultados/`: métricas y resultados de evaluación de los modelos.
+- `ejemplos/`: fotografías utilizadas para probar la aplicación.
+- `.streamlit/`: configuración de Streamlit.
+- `requirements.txt`: dependencias necesarias para ejecutar el proyecto.
 
-En las 186 imágenes de prueba, EfficientNet-B0 obtuvo una exactitud balanceada de 96,43%, frente al 91,70% de YOLO26n-cls.
+En las 186 imágenes de prueba, EfficientNet-B0 obtuvo una exactitud balanceada de 96,43 %, frente al 91,70 % de YOLO26n-cls. Para los pronósticos de producción se compararon el suavizamiento exponencial, el promedio móvil y Holt, utilizando el MAE como métrica de evaluación.
 
 ## Alcance del proyecto
 
