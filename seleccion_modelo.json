@@ -1,0 +1,63 @@
+{
+  "modelo_seleccionado": "EfficientNet-B0",
+  "criterio": "máxima accuracy balanceada en VALIDACION; desempate recall defectuosa",
+  "epochs": 2,
+  "tamanos": {
+    "train": 928,
+    "val": 186,
+    "test": 186
+  },
+  "clases": [
+    "correcta",
+    "defectuosa"
+  ],
+  "metrica_validacion": {
+    "n": 186,
+    "accuracy": 0.9354838709677419,
+    "accuracy_balanceada": 0.9464285714285714,
+    "precision_defectuosa": 1.0,
+    "recall_defectuosa": 0.8928571428571429,
+    "f1_defectuosa": 0.9433962264150944,
+    "fp": 0,
+    "fn": 12,
+    "tn": 74,
+    "tp": 100,
+    "matriz_confusion": [
+      [
+        74,
+        0
+      ],
+      [
+        12,
+        100
+      ]
+    ],
+    "auroc": 0.9937258687258688
+  },
+  "metrica_prueba": {
+    "n": 186,
+    "accuracy": 0.956989247311828,
+    "accuracy_balanceada": 0.9642857142857143,
+    "precision_defectuosa": 1.0,
+    "recall_defectuosa": 0.9285714285714286,
+    "f1_defectuosa": 0.9629629629629629,
+    "fp": 0,
+    "fn": 8,
+    "tn": 74,
+    "tp": 104,
+    "matriz_confusion": [
+      [
+        74,
+        0
+      ],
+      [
+        8,
+        104
+      ]
+    ],
+    "auroc": 0.9972249034749034
+  },
+  "ruta_checkpoint": "resultados_modelos_imagenes\\efficientnet_b0_best.pth",
+  "integracion_n8n": "PENDIENTE, no actualizar API antes de desplegar este modelo",
+  "advertencia": "Los scores no son probabilidades calibradas; imágenes de Kaggle sin relación real con líneas A/B/C."
+}
